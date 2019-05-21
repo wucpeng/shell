@@ -1,0 +1,99 @@
+#获取日期函数 昨天 2017-06-01
+currentDay=`date -d 'yesterday' +20%y-%m-%d` 
+currentDay=`date -d 'next day' +20%y-%m-%d` 
+currentDay=`date -d 'last day' +20%y-%m-%d` 
+currentDay=`date -d 'last month' +20%y-%m-%d` 
+currentDay=`date -d 'next month' +20%y-%m-%d` 
+
+计算表达式
+allGetCount=`expr $get1 + $get2 + $get3 + $get4`
+
+发送邮件
+sendEmail -s smtp.ym.163.com -u title -t wuchangpeng@haizitong.com -f notice0@haizitong.cn -xu 邮箱账号 -xp 邮箱密码 -o message-content-type=html message-charset=utf-8 message-file=test.txt
+
+locate 文件名
+find ./ | xargs -n grep "字段"
+
+定时执行脚本 crontab 
+crontab -l
+crontab -e
+0 1 * * * /root/server/sendLog4js.sh > /dev/null 2>&1
+
+netstat -lntp
+kill -9 进程号
+
+ping ip/dns
+telnet ip port
+
+防火墙
+ufw status
+ufw allow from ip
+ufw allow port
+
+ios设备推送证书命令
+openssl x509 -in cert.cer -inform DER -outform PEM -out cert.pem
+openssl pkcs12 -in key.p12 -out key.pem -nodes
+
+gcc 升级
+1. 首先查看当前gcc的版本： gcc --version （一般是4.6左右）
+2. Adding the toolchain/test PPA:
+     add-apt-repository ppa:ubuntu-toolchain-r/test
+3. 更新，然后安装即可：
+     apt-get update
+     apt-get install gcc-4.8
+     apt-get install g++-4.8
+     
+rm /usr/bin/gcc
+ln -s /usr/bin/gcc-4.8 /usr/bin/gcc
+rm /usr/bin/g++
+ln -s /usr/bin/g++-4.8 /usr/bin/g++
+
+du -sh *
+df -h
+
+uname -a
+lsb_release -a
+free -m
+
+# 总核数 = 物理CPU个数 X 每颗物理CPU的核数 
+# 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
+# 查看物理CPU个数
+cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
+#查看每个物理CPU中core的个数(即核数)
+cat /proc/cpuinfo| grep "cpu cores"| uniq
+# 查看逻辑CPU的个数
+cat /proc/cpuinfo| grep "processor"| wc -l
+
+git status
+git branch
+git checkout -b name
+git merge 
+git add
+git commit -m"ssss"
+git push origin "222"
+git pull origin "222"
+git rm file
+push所有tag，命令格式为：git push [origin] --tags
+git push --tags
+git push origin --tags
+
+apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+apt-get install ffmpeg
+apt-get install imagemagick
+apt-get install graphicsmagick
+
+# 匹配查看日志
+egrep ' [0-9]{4,} ms' log.log_2017-08-26
+
+mongodb shell 查看数据时 限制条数设置
+DBQuery.shellBatchSize = 20
+#查找指定字段 语句
+db.collection.distinct(field, query, options)
+
+fdisk -l
+mkfs.ext3 /dev/xvdb
+mount /dev/xvdb /mnt
+
+apt install coffeescript
+npm install -g coffee-script
+npm install -g express-generator

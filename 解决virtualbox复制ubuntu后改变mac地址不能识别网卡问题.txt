@@ -1,0 +1,3 @@
+在vbox里面安装了一个ubuntu server 12.04，利用自带的复制功能，完成多个虚拟服务器的搭建。
+登陆时ifconfig发现eth0不翼而飞，自然也不能连通网络。 最后发现是/etc/udev/rules.d/70-persistent-net.rules文件保存了原始虚拟机网卡的mac地址，这时候利用vbox刷新mac地址，自然匹配不了，ubuntu就识别不出网卡。
+解决办法是删除这个文件，然后重启下虚拟机，就可以用了

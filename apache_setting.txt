@@ -1,0 +1,80 @@
+配置域名端口转发
+文件夹下 sites-enabled 建立配置文件
+
+minhang.haizitong.com 文件内容
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        ServerName minhang.haizitong.com
+        ProxyPass / http://localhost:3500/
+        ProxyPassReverse / http://localhost:3500/
+        ErrorLog ${APACHE_LOG_DIR}/minhang_haizitong_error.log
+        CustomLog ${APACHE_LOG_DIR}/minhang_haizitong_access.log combined
+</VirtualHost>
+<VirtualHost *:443>
+        ServerAdmin webmaster@localhost
+        ServerName minhang.haizitong.com
+
+        ProxyPass / http://localhost:3500/
+        ProxyPassReverse / http://localhost:3500/
+
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl/ssl_csr/*.haizitong.com.chained.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/ssl_csr/*.haizitong.com.key
+        SSLCertificateChainFile /etc/apache2/ssl/ssl_csr/gd_bundle-g2-g1.crt
+        ErrorLog ${APACHE_LOG_DIR}/https_minhang_haizitong_error.log
+        CustomLog ${APACHE_LOG_DIR}/https_minhang_haizitong_access.log combined
+</VirtualHost>
+
+port.conf文件下添加 字段
+NameVirtualHost *:80
+Listen 80
+<IfModule mod_ssl.c>
+    Listen 443
+    NameVirtualHost *:443
+</IfModule>
+<IfModule mod_gnutls.c>
+    NameVirtualHost *:443
+    Listen 443
+</IfModule>
+
+httpd.conf文件安装配置
+LoadModule proxy_module /usr/lib/apache2/modules/mod_proxy.so
+LoadModule proxy_http_module /usr/lib/apache2/modules/mod_proxy_http.so
+LoadModule ssl_module /usr/lib/apache2/modules/mod_ssl.so
+
+
+centOS 系统 httpd配置
+conf.d/ssl.conf文件 添加ssl证书
+conf/httpd.conf文件 配置
+ServerName localhost:80
+NameVirtualHost *:80
+<VirtualHost *:80>
+    ServerName upload.haizitong.com
+    ServerAdmin webmaster@localhost
+    ProxyPass / http://116.211.15.214:5005/
+    ProxyPassReverse / http://116.211.15.214:5005/
+    ErrorLog logs/upload.haizitong.com-error_log
+    CustomLog logs/upload.haizitong.com-access_log common
+</VirtualHost>
+<VirtualHost *:80>
+    ServerName wordFilter.haizitong.com
+    ServerAdmin webmaster@localhost
+    ProxyPass / http://116.211.15.214:8080/
+    ProxyPassReverse / http://116.211.15.214:8080/
+    ErrorLog logs/wordFilter.haizitong.com-error_log
+    CustomLog logs/wordFilter.haizitong.com-access_log common
+</VirtualHost>
+
+NameVirtualHost *:443
+<VirtualHost *:443>
+    ServerName upload.haizitong.com
+    ServerAdmin webmaster@localhost
+    ProxyPass / http://116.211.15.214:5005/
+    ProxyPassReverse / http://116.211.15.214:5005/
+    SSLEngine on
+    SSLCertificateFile /etc/httpd/ssl/upload.haizitong.com.crt
+    SSLCertificateKeyFile /etc/httpd/ssl/upload.haizitong.com.key
+    SSLCertificateChainFile /etc/httpd/ssl/upload.haizitong.com-ca-bundle.crt
+    ErrorLog logs/https_upload.haizitong.com-error_log
+    CustomLog logs/https_upload.haizitong.com-access_log common
+</VirtualHost>

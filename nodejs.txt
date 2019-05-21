@@ -1,0 +1,8 @@
+es6 拷贝对象深复制： let data = Object.assign({}, copyData);
+
+mac npm 安装qrcode时出错处理：由于qrcode依赖canvas库，该库需要node-gyp编译， 需要安装pkgconfig, brew install pkgconfig
+
+
+lodash.js
+underscore.js  
+collect.js 
