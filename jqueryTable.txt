@@ -1,0 +1,7 @@
+清空数据表:             $("#account-list tr:gt(0)").remove();
+最后一行添加数据： $("#account-list tr:last" ).after (newRow);
+修改某一元素数据： $("#school-list-modal tr[id='" + idModal + "'] td:eq(2)").html("已开启");
+删除某一行数据：     $("#row-catalog-" + catalogId).remove();
+
+$ ( newCatalog).insertAfter( ".catalog-header" );
+$ ( "#row-catalog-" + id + " td:first-child"). html (newCatlog );
