@@ -1,0 +1,12 @@
+批量更新一个数组字段
+db.getCollection('class').update({"_id":ObjectId("55111579718c59334d000003")},{
+    $pull:{
+        "deletedStudents":  {userId: {$in:  [ObjectId("5512448328c5131851000001"), ObjectId("5512448328c5131851000005")]}}} 
+    })
+    
+    
+/usr/bin/mongo -usa -p --authenticationDatabase admin --port 27017
+这样登陆
+sa密码是Q8yWuLJ1qSth9fA63b74
+你试一下
+10是主节点    
