@@ -6,3 +6,35 @@ mac npm 安装qrcode时出错处理：由于qrcode依赖canvas库，该库需要
 lodash.js
 underscore.js  
 collect.js 
+
+内存设置 
+node --max-nex-space-size=1024 app.js // 单位为KB
+node --max-old-space-size=2000 app.js // 单位为MB
+
+coffee  --nodejs '--max_old_space_size=4096' server.coffee
+这两条命令分别对应Node内存堆中的「新生代」和「老生代」
+
+canvas 安装失败问题
+npm install canvas --canvas_binary_host_mirror=https://npm.taobao.org/mirrors/node-canvas-prebuilt/
+
+
+#! /bin/bash
+rm -rf /opt/node
+
+curl https://nodejs.org/dist/v12.18.3/node-v12.18.3-linux-x64.tar.xz
+xz -d node-v12.18.3-linux-x64.tar.xz
+tar -xvf node-v12.18.3-linux-x64.tar
+mv node-v12.18.3-linux-x64 node
+
+rm /usr/local/bin/node
+rm /usr/local/bin/npm
+rm /usr/local/bin/node-gyp
+ln -s /opt/node/bin/node /usr/local/bin/node
+ln -s /opt/node/bin/npm /usr/local/bin/npm
+npm i -g node-gyp
+
+ln -s /opt/node/bin/node-gyp /usr/local/bin/node-gyp
+npm i -g coffee
+npm i -g coffeescript
+
+ln -s /opt/node/bin/coffee /usr/local/bin/coffee
