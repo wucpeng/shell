@@ -94,6 +94,3 @@ fdisk -l
 mkfs.ext3 /dev/xvdb
 mount /dev/xvdb /mnt
 
-apt install coffeescript
-npm install -g coffee-script
-npm install -g express-generator
