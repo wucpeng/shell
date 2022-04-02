@@ -46,3 +46,50 @@ exports.generateDoc = (modalPath, output, options, images)=> { // 同步生成do
 };
 
 // 异步版本 
+const request = require('request');
+function streamToBuffer(stream) {
+    return new Promise((resolve, reject) => {
+        let buffers = [];
+        stream.on('error', reject);
+        stream.on('data', (data) => buffers.push(data))
+        stream.on('end', () => resolve(Buffer.concat(buffers)))
+    });
+}
+let getHttpData = (url)=> {
+    if (url.indexOf("https") == 0) url = url.replace("https", "http");
+    return streamToBuffer(request(url)); //需要升级 现在https证书认证有问题
+};
+//{#images}{%.} {/images} 图片数组模板 横排
+let imageOptsData = {
+    centered: false,
+    getImage: function (tagValue, tagName) {
+        console.log("getImage", tagValue, tagName);
+        return getHttpData(tagValue); //fs.readFileSync(tagValue);
+    },
+    getSize: function (img, tagValue, tagName) {
+        const sizeOf = require("image-size");
+        const sizeObj = sizeOf(img);
+        console.log(sizeObj);
+        const forceWidth = 100;
+        const ratio = forceWidth / sizeObj.width;
+        return [
+            forceWidth,
+            // calculate height taking into account aspect ratio
+            Math.round(sizeObj.height * ratio),
+        ];
+    },
+};
+
+exports.generateDocAsync = async (modalPath, output, options, images)=> {
+    let imageModule = new ImageModule(imageOptsData);
+    options.images = images;
+    let content = fs.readFileSync(modalPath, "binary");
+    let zip = new PizZip(content);
+    let doc = new Docxtemplater().loadZip(zip).attachModule(imageModule).compile();
+    await doc.resolveData(options);
+    doc.render();
+    let buf = doc.getZip().generate({type: "nodebuffer", compression: "DEFLATE"});
+    fs.writeFileSync(output, buf);
+};
+
+
